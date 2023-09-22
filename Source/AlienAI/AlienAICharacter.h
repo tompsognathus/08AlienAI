@@ -48,6 +48,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Weapon)
 	bool GetHasRifle();
 
+	/** Getter for behaviour tree **/
+	UFUNCTION(BlueprintCallable, Category = BehaviourTree)
+	class UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
+
 public:
 	/** Crouch Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
@@ -70,6 +74,8 @@ public:
 	bool bHasRifle;
 
 
+
+
 protected:
 	virtual void BeginPlay();
 
@@ -85,6 +91,11 @@ protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	// End of APawn interface
+	
+protected:
+	/** Alien AI **/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta=(AllowPrivateAccess="true"))
+	UBehaviorTree* BehaviorTree;
 
 private:
 	bool IsCrouching = false;
