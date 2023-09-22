@@ -5,24 +5,20 @@
 #include "../AlienAIController.h"
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "../Utility.h"
 
 
 UBTT_FindRandomLocation::UBTT_FindRandomLocation(FObjectInitializer const& ObjectInitializer)
 {
-	NodeName = "Find Random NavMesh Location";
+	NodeName = TEXT("Find Random NavMesh Location");
 
 }
 
 EBTNodeResult::Type UBTT_FindRandomLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComponent, uint8* NodeMemory)
 {
-	AAlienAIController* const AlienController = Cast<AAlienAIController>(OwnerComponent.GetAIOwner());
-	if (!IsValid(AlienController))
-	{
-		UE_LOG(LogTemp, Error, TEXT("UBTT_FindRandomLocation::ExecuteTask(): Invalid AlienController"));
-		return EBTNodeResult::Failed;
-	}
-	
-	APawn* AlienPawn = AlienController->GetPawn();
+
+	APawn* AlienPawn = Utility::GetAlienPawn(OwnerComponent);
+
 	if (!IsValid(AlienPawn))
 	{
 		UE_LOG(LogTemp, Error, TEXT("UBTT_FindRandomLocation::ExecuteTask(): Invalid AlienPawn"));
@@ -31,10 +27,10 @@ EBTNodeResult::Type UBTT_FindRandomLocation::ExecuteTask(UBehaviorTreeComponent&
 
 	FVector const CurrentActorLocation = AlienPawn->GetActorLocation();
 	
-	UNavigationSystemV1* NavigationSystem = UNavigationSystemV1::GetCurrent(GetWorld());
+	UNavigationSystemV1* NavigationSystem = Utility::GetNavigationSystem(this);
 	if (!IsValid(NavigationSystem))
 	{
-		UE_LOG(LogTemp, Error, TEXT("UBTT_FindRandomLocation::ExecuteTask(): Invalid NavigationSystem"));
+		UE_LOG(LogTemp, Error, TEXT("UBTT_FindRandomLocation::ExecuteTask: Invalid NavigationSystem"));
 		return EBTNodeResult::Failed;
 	}
 
