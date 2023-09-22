@@ -14,4 +14,12 @@ class ALIENAI_API UBTT_FindRandomLocation : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
 	
+public:
+	explicit UBTT_FindRandomLocation(FObjectInitializer const& ObjectInitializer);
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComponent, uint8* NodeMemory) override;
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
+	float SearchRadius = 1500.0f;
+
 };
