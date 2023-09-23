@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "Perception/AIPerceptionTypes.h"
 #include "AlienAIController.generated.h"
 
-/**
- * 
- */
+class UAISenseConfig_Sight;
+
 UCLASS()
 class ALIENAI_API AAlienAIController : public AAIController
 {
@@ -20,6 +20,14 @@ public:
 protected:
 	virtual void OnPossess(APawn* const InPawn) override;
 
+private:
+	void SetupPerceptionSystem();
+
+	UFUNCTION()
+	void OnTargetDetected(AActor* Actor, FAIStimulus const Stimulus);
+
+private:
+	UAISenseConfig_Sight* SightConfig;
 
 
 };

@@ -13,6 +13,8 @@ class USceneComponent;
 class UCameraComponent;
 class UAnimMontage;
 class USoundBase;
+class UInputMappingContext;
+class UAIPerceptionComponent;
 
 UCLASS(config=Game)
 class AAlienAICharacter : public ACharacter
@@ -29,8 +31,7 @@ class AAlienAICharacter : public ACharacter
 
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	class UInputMappingContext* DefaultMappingContext;
-
+	UInputMappingContext* DefaultMappingContext;
 
 public:
 	AAlienAICharacter();
