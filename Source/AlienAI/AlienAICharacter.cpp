@@ -8,12 +8,16 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Sight.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AAlienAICharacter
 
 AAlienAICharacter::AAlienAICharacter()
 {
+	SetupStimulusSource();
+
 	// Character doesnt have a rifle at start
 	bHasRifle = false;
 	
@@ -53,8 +57,20 @@ void AAlienAICharacter::BeginPlay()
 
 }
 
-//////////////////////////////////////////////////////////////////////////// Input
 
+void AAlienAICharacter::SetupStimulusSource()
+{
+	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("StimulusSource"));
+	if (!IsValid(StimulusSource))
+	{
+		UE_LOG(LogTemp, Error, TEXT("AAlienAICharacter::SetupStimulusSource: Invalid StimulusSource"));
+		return;
+	}
+	StimulusSource->RegisterForSense(TSubclassOf<UAISense_Sight>());
+	StimulusSource->RegisterWithPerceptionSystem();
+}
+
+//////////////////////////////////////////////////////////////////////////// Input
 void AAlienAICharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// Set up action bindings
@@ -70,7 +86,6 @@ void AAlienAICharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AAlienAICharacter::Look);
 	}
 }
-
 
 void AAlienAICharacter::Move(const FInputActionValue& Value)
 {

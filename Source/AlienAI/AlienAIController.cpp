@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "AlienAIController.h"
 #include "AlienAICharacter.h"
 #include "BehaviorTree/BehaviorTree.h"
@@ -73,6 +72,21 @@ void AAlienAIController::SetupPerceptionSystem()
 
 void AAlienAIController::OnTargetDetected(AActor* Actor, FAIStimulus const Stimulus)
 {
-	UE_LOG(LogTemp, Error, TEXT("AAlienAIController::OnTargetDetected()"));
+	AAlienAICharacter* const AlienCharacter = Cast<AAlienAICharacter>(Actor);
+	if (!IsValid(AlienCharacter))
+	{
+		UE_LOG(LogTemp, Error, TEXT("AAlienAIController::OnTargetDetected(): Invalid AlienCharacter"));
+		return;
+	}
+
+	UBlackboardComponent* const BlackboardComponent = GetBlackboardComponent();
+	if (!IsValid(BlackboardComponent))
+	{
+		UE_LOG(LogTemp, Error, TEXT("AAlienAIController::OnTargetDetected(): Invalid BlackboardComponent"));
+		return;
+	}
+
+	BlackboardComponent->SetValueAsBool("CanSeePlayer", Stimulus.WasSuccessfullySensed());
+
 }
 

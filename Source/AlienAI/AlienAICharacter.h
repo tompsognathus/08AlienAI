@@ -15,6 +15,7 @@ class UAnimMontage;
 class USoundBase;
 class UInputMappingContext;
 class UAIPerceptionComponent;
+class UAIPerceptionStimuliSourceComponent;
 
 UCLASS(config=Game)
 class AAlienAICharacter : public ACharacter
@@ -75,8 +76,6 @@ public:
 	bool bHasRifle;
 
 
-
-
 protected:
 	virtual void BeginPlay();
 
@@ -99,7 +98,11 @@ protected:
 	UBehaviorTree* BehaviorTree;
 
 private:
+	void SetupStimulusSource();
+
+private:
 	bool IsCrouching = false;
 
+	UAIPerceptionStimuliSourceComponent* StimulusSource;
 };
 
